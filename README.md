@@ -32,6 +32,10 @@
 
 This command will build the necessary images and start the containers in the correct order.
 
+### Architecture
+
+
+
 ### Access the application
 - Frontend: [http://localhost:80](http://localhost:80)
 - Kibana: [http://localhost:5601](http://localhost:5601)
