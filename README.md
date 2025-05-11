@@ -34,7 +34,7 @@ This command will build the necessary images and start the containers in the cor
 
 ### Architecture
 
-
+![elk drawio](https://github.com/user-attachments/assets/663a090b-ffb6-4fab-9435-8d30c73677f1)
 
 ### Access the application
 - Frontend: [http://localhost:80](http://localhost:80)
