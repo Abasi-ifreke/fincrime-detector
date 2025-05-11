@@ -94,12 +94,3 @@ curl -X GET \
 - **Maintainability**: Modular architecture with comprehensive logging simplifies maintenance and debugging.
 
 ---
-
-## Contributing
-
-We welcome contributions to the Financial Crime Detector project!  
-Please read our **Contributing Guide** for guidelines on how to get started.
-
-If you find a bug, want to add a feature, or improve documentation, feel free to submit an issue or a pull request.
-
----
