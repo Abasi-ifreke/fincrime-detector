@@ -1,33 +1,90 @@
 # Financial Crime Detector
 
-## Overview
-The **Financial Crime Detector** is a robust, scalable, and real-time system designed to detect potentially fraudulent transactions.  
-By combining sophisticated rule-based detection with machine learning techniques, this system provides early warnings to financial institutions, helping to prevent fraud and minimize financial losses.
+## Getting Started
 
-This system incorporates **Elasticsearch** for powerful data analysis and storage, along with a **Go-based backend** for efficient processing.
+### Prerequisites
+- Docker
+- Docker Compose
+- Basic knowledge of Go, React, and Docker
 
-## Key Features
-- **Real-time Transaction Analysis**: Processes and analyzes transactions as they occur, providing immediate feedback.
-- **Rule-Based Detection**: Uses a flexible rule engine to identify suspicious activities based on predefined criteria.
-- **Elasticsearch Integration**: Stores and indexes transaction data and alerts for efficient querying, analysis, and visualization.
-- **Go-Based Backend**: High-performance backend built with Go for efficient transaction processing and alert generation.
-- **PostgreSQL Database**: Stores detection rules and persistent data.
-- **Kibana Visualization**: User-friendly interface for visualizing alerts and transaction data.
-- **Logstash Integration**: Data processing and enrichment before reaching Elasticsearch.
-- **Metrics and Monitoring**: Exposes Prometheus metrics for system performance monitoring.
-- **Dockerized Deployment**: Easy deployment with Docker and Docker Compose.
-- **Comprehensive Logging**: Detailed logging using Logrus.
-- **Secure Authentication**: Basic authentication for API endpoints.
-- **CORS Support**: Correctly configured CORS to allow requests from the frontend.
+### Installation
 
-## Architecture
-The system architecture is designed for scalability, reliability, and maintainability. It includes the following components:
-- **Frontend**: A web-based user interface (likely built with React) for submitting transactions and viewing alerts.
-- **Backend**: A Go-based application that handles transaction processing, fraud detection, and communication with databases and Elasticsearch.
-- **PostgreSQL**: A relational database for storing detection rules and application data.
-- **Elasticsearch**: A distributed search and analytics engine for storing and indexing transactions and alerts.
-- **Kibana**: A visualization tool for exploring and analyzing data stored in Elasticsearch.
-- **Logstash**: A data processing pipeline that collects, transforms, and ships data into Elasticsearch.
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
+    ```
+
+2. **Set up the `.env` file:**
+    - Create a `.env` file in the root directory.
+    - Copy and modify the provided `.env` with your environment-specific values.
+    - Ensure you set secure passwords for `ELASTIC_PASSWORD` and `KIBANA_PASSWORD`.
+
+    ```bash
+    cp .env .env
+    # Modify .env with your actual environment variables
+    ```
+
+3. **Start the services:**
+    ```bash
+    docker compose up -d
+    ```
+
+This command will build the necessary images and start the containers in the correct order.
+
+### Access the application
+- Frontend: [http://localhost:80](http://localhost:80)
+- Kibana: [http://localhost:5601](http://localhost:5601)
+
+## Important Notes on Certificates
+- The system uses TLS certificates for secure communication with Elasticsearch.
+- Certificates are generated during the setup phase of the `docker-compose` process.
+- The `setup` service generates a Certificate Authority (CA) and server certificates.
+- These certificates are stored in the `config/certs` directory and are used by:
+  - Elasticsearch
+  - Kibana
+  - Backend service
+
+The backend trusts the CA certificate using the `RootCAs` field in the `tls.Config` when creating the Elasticsearch client (`initElasticsearch()` function in `main.go`).
+
+> Failure to properly configure certificates will result in communication errors between the backend and Elasticsearch.
+
+## API Documentation
+
+### Transactions
+
+#### `POST /api/transactions`
+- Accepts a JSON payload representing a transaction.
+- Requires `Authorization` header (Basic Auth).
+
+**Example:**
+```bash
+curl -X POST \
+  http://localhost:8080/api/transactions \
+  -H 'Authorization: Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": "transaction_id_123",
+    "account_id": "account_id_456",
+    "transaction_type": "transfer",
+    "amount": 1000.00,
+    "timestamp": "2024-07-24T12:00:00Z"
+  }'
+```
+
+## Alerts
+
+### `GET /api/alerts`
+Retrieves a list of triggered alerts.
+
+- Requires `Authorization` header (Basic Authentication).
+
+**Example:**
+```bash
+curl -X GET \
+  http://localhost:8080/api/alerts \
+  -H 'Authorization: Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk'
+```
 
 ## Design Considerations
 
@@ -35,5 +92,14 @@ The system architecture is designed for scalability, reliability, and maintainab
 - **Real-time Performance**: Elasticsearch enables fast indexing and querying of transactions and alerts.
 - **Extensibility**: New detection rules can be easily added to the PostgreSQL database without requiring code changes.
 - **Maintainability**: Modular architecture with comprehensive logging simplifies maintenance and debugging.
+
+---
+
+## Contributing
+
+We welcome contributions to the Financial Crime Detector project!  
+Please read our **Contributing Guide** for guidelines on how to get started.
+
+If you find a bug, want to add a feature, or improve documentation, feel free to submit an issue or a pull request.
 
 ---
